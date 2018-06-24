@@ -37,8 +37,8 @@ let private calculateFrame (frame: Frame, nextFrame: Frame option, secondNextFra
     | Strike -> 10 + (getFirst2ThrowsValue nextFrame.Value secondNextFrame)
     | FinalStrike (second, third) -> 10 + second + third
     | Spare _ -> 10 + (getFirstThrowValue nextFrame.Value)
-    | FinalSpare (_, thirdThrow) -> 10 + thirdThrow
-    | Pins (throw1, throw2) -> throw1 + throw2
+    | FinalSpare (_, third) -> 10 + third
+    | Pins (first, second) -> first + second
     
 let calculate (game: BowlingGame) =
     let prepend a b = List.append b a
