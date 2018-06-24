@@ -24,10 +24,18 @@ let private getFirstThrowValue frame =
     | FinalSpare (first, _) -> first
     | Pins (first, second) -> first 
 
+let private getFirst2ThrowsValue frame1 (frame2: Frame option) =
+    match frame1 with
+    | Strike -> 10 + (getFirstThrowValue frame2.Value)
+    | FinalStrike (second, third) -> 10 + second
+    | Spare _ -> 10
+    | FinalSpare (first, _) -> 10
+    | Pins (first, second) -> first + second
+
 let private calculateFrame (frame: Frame, nextFrame: Frame option, secondNextFrame: Frame option) =
     match frame with
-    | Strike -> 30
-    | FinalStrike _ -> 30
+    | Strike -> 10 + (getFirst2ThrowsValue nextFrame.Value secondNextFrame)
+    | FinalStrike (second, third) -> 10 + second + third
     | Spare _ -> 10 + (getFirstThrowValue nextFrame.Value)
     | FinalSpare (_, thirdThrow) -> 10 + thirdThrow
     | Pins (throw1, throw2) -> throw1 + throw2
